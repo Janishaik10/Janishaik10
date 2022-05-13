@@ -1,11 +1,20 @@
-node {
-  stage('SCM') {
-    checkout scm
-  }
-  stage('SonarQube Analysis') {
-    def mvn = tool 'Default Maven';
-    withSonarQubeEnv() {
-      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-pipeline"
-    }
-  }
-}
+pipeline {
+   agent any
+   tools {
+        maven 'M2_HOME'
+        jdk 'JAVA_HOME'
+   }
+   stages  {
+     stage("Checkout Code from SCM GITHUB')
+        steps {
+          git branch: 'master',
+          url: "https://github.com/pvenkatesh2291/Hello-World.git"
+        }
+     } 
+     stage("Building Application Using MVN")  {
+        steps {
+        sh "mvn clean packages"
+        }
+     }
+   }
+} 
